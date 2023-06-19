@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mariadb
+    container_name: mi_mariadb
+    #variables de entornos
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+      MYSQL_DATABASE: mi_base_de_datos
+    ports:
+      - 3306:3306
+
+  aplicacion_node:
+    container_name: aplicacion
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    environment:
+      PORT: 3000
+      DB_HOST: mariadb 
+    depends_on:
+      - mariadb
+    ports:
+      - 3000:3000
